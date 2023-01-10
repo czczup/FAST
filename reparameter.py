@@ -48,7 +48,7 @@ def main(args):
             print("Loading model and optimizer from checkpoint '{}'".format(args.checkpoint))
             checkpoint = torch.load(args.checkpoint)
             d = dict()
-            for key, value in checkpoint['state_dict'].items():
+            for key, value in checkpoint['ema'].items():
                 tmp = key.replace("module.", "")
                 d[tmp] = value
             model.load_state_dict(d)
