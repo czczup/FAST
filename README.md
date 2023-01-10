@@ -9,17 +9,22 @@ This repository is an official implementation of the [FAST: Faster Arbitrarily-S
 - [x] [PAN (ICCV'2019)](config/pan/)
 - [x] [FAST (Arxiv'2021)](config/fast/)
 
-**Note: The repository is still in preparation.**
-
 </details>
 
 ## News
+- `Jan 10, 2023:`🚀🚀 Code and models are released.
 - `Dec 06, 2022:`🚀 Code and models of FAST will be released in this repository.
+
+## Catalog
+
+- [ ] TensorRT implementation
+- [x] Code and models
+- [x] Initialization
 
 ## Abstract
 We propose an accurate and efficient scene text detection framework, termed FAST (i.e., **F**aster **A**rbitrarily-**S**haped **T**ext detector).
-Different from recent advanced text detectors that used complicated post-processing and hand-crafted network architectures, resulting in low inference speed, FAST has two new designs. **(1)** We design a minimalist kernel representation (only has 1-channel output) to model text with arbitrary shape, as well as a GPU-parallel post-processing to efficiently assemble text lines with negligible time overhead. **(2)** We search the network architecture 
-tailored for text detection, leading to more powerful features than most networks that are searched for image classification. Benefiting from these two designs, FAST achieves an excellent trade-off between accuracy and efficiency on several challenging datasets, including Total Text, CTW1500, ICDAR 2015, and MARA-TD500. For example, FAST-T yields 81.6\% F-measure at 152 FPS on Total-Text, outperforming the previous fastest method by 1.7 points and 70 FPS in terms of accuracy and speed. With TensorRT optimization, the inference speed can be further accelerated to over 600 FPS.
+Different from recent advanced text detectors that used complicated post-processing and hand-crafted network architectures, resulting in low inference speed, FAST has two new designs. **(1)** We design a minimalist kernel representation (only has 1-channel output) to model text with arbitrary shape, as well as a GPU-parallel post-processing to efficiently assemble text lines with a negligible time overhead. **(2)** We search the network architecture
+tailored for text detection, leading to more powerful features than most networks that are searched for image classification. Benefiting from these two designs, FAST achieves an excellent trade-off between accuracy and efficiency on several challenging datasets, including Total Text, CTW1500, ICDAR 2015, and MSRA-TD500. For example, FAST-T yields 81.6\% F-measure at 152 FPS on Total-Text, outperforming the previous fastest method by 1.7 points and 70 FPS in terms of accuracy and speed. With TensorRT optimization, the inference speed can be further accelerated to over 600 FPS.
 
 ## Method
 <img width="1382" alt="image" src="https://user-images.githubusercontent.com/23737120/206380932-c226d94e-0c07-4ffe-94fe-07e65efa6068.png">
@@ -37,7 +42,22 @@ git clone https://github.com/czczup/FAST
 Then, install PyTorch 1.1.0+, torchvision 0.3.0+, and other requirements:
 
 ```shell
-pip install -r requirement.txt
+# for python3 (training and testing)
+pip install editdistance
+pip install Polygon3
+pip install pyclipper
+pip install Cython
+pip install mmcv
+pip install prefetch_generator
+pip install scipy
+pip install yacs
+pip install tqdm
+pip install opencv-python==4.6.0.66
+
+# for python2 (evaluation)
+pip2 install numpy==1.10
+pip2 install scipy==1.2.2
+pip2 install polygon2
 ```
 
 Finally, compile codes of post-processing:
@@ -51,8 +71,16 @@ sh ./compile.sh
 Please refer to [dataset/README.md](dataset/README.md) for dataset preparation.
 
 ### Training
+First, please download the pretrained checkpoints:
 ```shell
-CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py ${CONFIG_FILE}
+mkdir pretrained/
+wget https://github.com/czczup/FAST/releases/download/release/fast_tiny_ic17mlt_640.pth
+wget https://github.com/czczup/FAST/releases/download/release/fast_small_ic17mlt_640.pth
+wget https://github.com/czczup/FAST/releases/download/release/fast_base_ic17mlt_640.pth
+```
+Then, run the following command for training:
+```shell
+CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py <config>
 ```
 For example:
 ```shell
@@ -61,16 +89,16 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py config/fast/tt/fast_base_tt_512_fin
 
 ### Testing
 
-#### Evaluate the performance
+#### Evaluate single checkpoint
 
 ```shell
-python test.py ${CONFIG_FILE} ${CHECKPOINT_FILE}
+python test.py <config> <checkpoint> --ema
 cd eval/
 ./eval_{DATASET}.sh
 ```
 For example:
 ```shell
-python test.py config/fast/tt/fast_base_tt_512_finetune_ic17mlt.py download/fast_base_tt_512_finetune_ic17mlt.pth
+python test.py config/fast/tt/fast_base_tt_512_finetune_ic17mlt.py download/fast_base_tt_512_finetune_ic17mlt.pth --ema
 cd eval
 sh eval_tt.sh
 ```
@@ -78,11 +106,11 @@ sh eval_tt.sh
 #### Evaluate the speed
 
 ```shell
-python test.py ${CONFIG_FILE} --report_speed
+python test.py ${CONFIG_FILE} --report-speed
 ```
 For example:
 ```shell
-python test.py config/fast/tt/fast_base_tt_512_finetune_ic17mlt.py --report_speed
+python test.py config/fast/tt/fast_base_tt_512_finetune_ic17mlt.py --report-speed
 ```
 
 
@@ -117,7 +145,7 @@ python test.py config/fast/tt/fast_base_tt_512_finetune_ic17mlt.py --report_spee
 | FAST-T-512 | TextNet-T  |  85.5  |  77.9  |  81.5   | 129.1 | [config](config/fast/ctw/fast_tiny_ctw_512_finetune_ic17mlt.py) | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_tiny_ctw_512_finetune_ic17mlt.pth) \| [log](logs/ctw/fast_tiny_ctw_512_finetune_ic17mlt.txt) |
 | FAST-S-512 | TextNet-S  |  85.6  | 78.7 | 82.0  | 112.9  | [config](config/fast/ctw/fast_small_ctw_512_finetune_ic17mlt.py) | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_small_ctw_512_finetune_ic17mlt.pth) \| [log](logs/ctw/fast_small_ctw_512_finetune_ic17mlt.txt) |
 | FAST-B-512 | TextNet-B  |  85.7  | 80.2 | 82.9  | 92.6  | [config](config/fast/ctw/fast_base_ctw_512_finetune_ic17mlt.py) | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_base_ctw_512_finetune_ic17mlt.pth) \| [log](logs/ctw/fast_base_ctw_512_finetune_ic17mlt.txt) |
-| FAST-B-640 | TextNet-B  |  85.7  | 81.8 | 83.7  | 66.5  | [config](config/fast/ctw/fast_base_ctw_640_finetune_ic17mlt.py) | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_base_ctw_640_finetune_ic17mlt.pth) \| [log](logs/ctw/fast_base_ctw_640_finetune_ic17mlt.txt) |
+| FAST-B-640 | TextNet-B  |  87.8  | 80.9 | 84.2  | 66.5  | [config](config/fast/ctw/fast_base_ctw_640_finetune_ic17mlt.py) | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_base_ctw_640_finetune_ic17mlt.pth) \| [log](logs/ctw/fast_base_ctw_640_finetune_ic17mlt.txt) |
 
 **Results on ICDAR 2015**
 
@@ -157,9 +185,5 @@ If this work is helpful for your research, please consider citing the following 
 ```
 
 ## License
-
-This project is developed and maintained by [IMAGINE Lab@National Key Laboratory for Novel Software Technology, Nanjing University](https://cs.nju.edu.cn/lutong/ImagineLab.html).
-
-<img src="https://github.com/whai362/pan_pp.pytorch/blob/master/logo.jpg" alt="IMAGINE Lab">
 
 This project is released under the [Apache 2.0 license](LICENSE).
