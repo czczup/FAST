@@ -74,6 +74,7 @@ Please refer to [dataset/README.md](dataset/README.md) for dataset preparation.
 First, please download the pretrained checkpoints:
 ```shell
 mkdir pretrained/
+cd pretrained/
 wget https://github.com/czczup/FAST/releases/download/release/fast_tiny_ic17mlt_640.pth
 wget https://github.com/czczup/FAST/releases/download/release/fast_small_ic17mlt_640.pth
 wget https://github.com/czczup/FAST/releases/download/release/fast_base_ic17mlt_640.pth
@@ -85,7 +86,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py <config>
 ```
 For example:
 ```shell
-CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py config/fast/tt/fast_base_tt_512_finetune_ic17mlt.py
+CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py config/fast/tt/fast_base_tt_800_finetune_ic17mlt.py
 ```
 
 ### Testing
@@ -99,9 +100,13 @@ cd eval/
 ```
 For example:
 ```shell
-python test.py config/fast/tt/fast_base_tt_512_finetune_ic17mlt.py download/fast_base_tt_512_finetune_ic17mlt.pth --ema
-cd eval
+python test.py config/fast/tt/fast_base_tt_800_finetune_ic17mlt.py download/fast_base_tt_800_finetune_ic17mlt.pth --ema
+cd eval/
 sh eval_tt.sh
+```
+It should give:
+```
+Precision:_0.900048239267_______/Recall:_0.851633393829/Hmean:_0.875171745978
 ```
 
 
@@ -117,7 +122,7 @@ python test.py <config> --report-speed
 ```
 For example:
 ```shell
-python test.py config/fast/tt/fast_base_tt_512_finetune_ic17mlt.py --report-speed
+python test.py config/fast/tt/fast_base_tt_800_finetune_ic17mlt.py --report-speed
 ```
 
 #### Visulization

@@ -10,7 +10,7 @@ FAST models from
 You may convert a trained model into the inference-time structure with
 
 ```
-python gen_wts.py [weights file of the training-time model to load] [path to save] -a [model name]
+python reparameter.py [weights file of the training-time model to load] [path to save]
 ```
 
 For example,
@@ -39,7 +39,7 @@ cmake ..
 
 make
 
-sudo ./fast -s fast-base-deploy  // serialize model to plan file i.e. 'RepVGG-B2.engine'
+sudo ./fast -s fast-base-deploy  // serialize model to plan file
 sudo ./fast -d fast-base-deploy  // deserialize plan file and run inference
 ```
 
