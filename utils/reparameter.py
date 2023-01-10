@@ -4,8 +4,7 @@ import os
 from mmcv import Config
 
 from models import build_model
-from models.utils import fuse_module
-from models.backbone.repvgg import repvgg_model_convert
+from models.utils import fuse_module, rep_model_convert
 
 
 def model_structure(model):
@@ -16,7 +15,7 @@ def model_structure(model):
           + ' ' * 3 + 'number' + ' ' * 3 + '|')
     print('-' * 90)
     num_para = 0
-    type_size = 1  ##如果是浮点数就是4
+    type_size = 1
 
     for index, (key, w_variable) in enumerate(model.named_parameters()):
         if len(key) <= 30:
@@ -57,7 +56,7 @@ def main(args):
             print("No checkpoint found at '{}'".format(args.checkpoint))
             raise
 
-    model = repvgg_model_convert(model)
+    model = rep_model_convert(model)
     model = fuse_module(model)
     model_structure(model)
     new_state_dict = {}
@@ -65,12 +64,13 @@ def main(args):
     for k, v in state_dict.items():
         if "det_head.final.conv" in k:
             print(k, v.shape)
-            new_state_dict[k] = v[:1, ...]
+            new_state_dict[k] = v[:1, ...] # remove auxiliary head
+            # we use only one channel to predict the final results
             print(new_state_dict[k].shape)
         else:
             new_state_dict[k] = v
     torch.save(new_state_dict, args.out)
-    # print(model)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Hyperparams')
@@ -79,5 +79,5 @@ if __name__ == '__main__':
     parser.add_argument('out', nargs='?', type=str, default=None)
 
     args = parser.parse_args()
-
+    
     main(args)

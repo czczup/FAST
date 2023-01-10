@@ -1,4 +1,3 @@
-import random
 
 from dataset.fast.fast_msra import msra_test_data_dir, msra_test_gt_dir
 from dataset.fast.fast_ctw import ctw_test_data_dir, ctw_test_gt_dir
@@ -6,12 +5,14 @@ from dataset.fast.fast_tt import tt_test_data_dir, tt_test_gt_dir
 from dataset.fast.fast_ic15 import ic15_test_data_dir, ic15_test_gt_dir
 from dataset.utils import get_msra_ann, get_ctw_ann, get_tt_ann, get_ic15_ann, get_img
 
-from tqdm import tqdm
+import cv2
 import mmcv
+import random
+import argparse
 import numpy as np
 from PIL import Image
-import cv2
-import argparse
+from tqdm import tqdm
+
 
 msra_pred_dir = 'outputs/submit_msra/'
 ctw_pred_dir = 'outputs/submit_ctw/'
@@ -54,53 +55,52 @@ def draw(img, boxes, words):
     
     
 def visual(get_ann, data_dir, gt_dir, pred_dir, dataset):
+    
     img_names = [img_name for img_name in mmcv.utils.scandir(data_dir, '.jpg')]
     img_names.extend([img_name for img_name in mmcv.utils.scandir(data_dir, '.png')])
     img_names.extend([img_name for img_name in mmcv.utils.scandir(data_dir, '.JPG')])
-    img_paths = []
-    gt_paths = []
-    pred_paths = []
+    
+    img_paths, gt_paths, pred_paths = [], [], []
+    
     for idx, img_name in enumerate(img_names):
         img_path = data_dir + img_name
         img_paths.append(img_path)
-        if dataset == 'msra':
+        
+        # collect paths of ground truths and predictions
+        if dataset == 'msra': # MSRA-TD500
             gt_name = img_name.split('.')[0] + '.gt'
             gt_path = gt_dir + gt_name
             gt_paths.append(gt_path)
-    
             pred_name = img_name.split('.')[0] + '.txt'
             pred_path = pred_dir + pred_name
             pred_paths.append(pred_path)
-        elif dataset == 'ctw':
+        elif dataset == 'ctw': # CTW-1500
             gt_name = img_name.split('.')[0] + '.txt'
             gt_path = gt_dir + gt_name
             gt_paths.append(gt_path)
-    
             pred_name = img_name.split('.')[0] + '.txt'
             pred_path = pred_dir + pred_name
             pred_paths.append(pred_path)
-        elif dataset == 'tt':
+        elif dataset == 'tt': # Total-Text
             gt_name = 'poly_gt_' + img_name.split('.')[0] + '.mat'
             gt_path = gt_dir + gt_name
             gt_paths.append(gt_path)
-    
             pred_name = img_name.split('.')[0] + '.txt'
             pred_path = pred_dir + pred_name
             pred_paths.append(pred_path)
-        elif dataset == 'ic15':
+        elif dataset == 'ic15': # ICDAR 2015
             gt_name = 'gt_' + img_name.split('.')[0] + '.txt'
             gt_path = gt_dir + gt_name
             gt_paths.append(gt_path)
-    
             pred_name = "res_" + img_name.split('.')[0] + '.txt'
             pred_path = pred_dir + pred_name
             pred_paths.append(pred_path)
             
     for index, (img_path, gt_path, pred_path) in tqdm(enumerate(zip(img_paths, gt_paths, pred_paths)), total=len(img_paths)):
-        img = get_img(img_path)
-        gt, word = get_ann(img, gt_path)
-        # gt = np.array(gt)
-        try:
+        img = get_img(img_path) # load image
+        gt, word = get_ann(img, gt_path) # load annotation
+
+        try: # process annotations
             if dataset == 'msra':
                 gt = np.reshape(gt * ([img.shape[1], img.shape[0]] * 4), (gt.shape[0], -1, 2)).astype('int32')
             elif dataset == 'ctw':
@@ -117,11 +117,12 @@ def visual(get_ann, data_dir, gt_dir, pred_dir, dataset):
                     new_gt[i] = np.reshape(gt[i] * ([img.shape[1], img.shape[0]] * (gt[i].shape[0] // 2)),
                                            (gt[i].shape[0] // 2, 2)).astype('int32')
                 gt = new_gt
-        except:
-            pass
-            
+        except Exception as e:
+            print(e)
+        
+        # load predictions
         pred, _ = get_pred(pred_path)
-        if dataset == 'msra':
+        if dataset == 'msra': # process predictions
             if pred.shape[0] > 0:
                 pred = np.reshape(pred, (pred.shape[0], -1, 2)).astype('int32')
         elif dataset == 'ctw':
@@ -138,21 +139,23 @@ def visual(get_ann, data_dir, gt_dir, pred_dir, dataset):
                 pred[i] = np.reshape(pred[i], (-1, 2)).astype('int32')
                 
         img_ = img.copy()
-        img_pred = draw(img, pred, _)
-        img_gt = draw(img_, gt, word)
-        img = np.hstack((img_gt, img_pred))
+        img_pred = draw(img, pred, _) # draw predictions on images
+        img_gt = draw(img_, gt, word) # draw ground truths on images
+        img = np.hstack((img_gt, img_pred)) # stack two images
         img = Image.fromarray(img)
         mmcv.mkdir_or_exist(f"visual/{dataset}")
-        img.save(f"visual/{dataset}/{index}.png")
+        img.save(f"visual/{dataset}/{index}.png") # save images into visual/
         
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Hyperparams')
-    parser.add_argument('--dataset', nargs='?', type=str, required=True)
-    parser.add_argument('--show_origin', action="store_true")
-
+    parser.add_argument('--dataset', nargs='?', type=str, required=True,
+                        choices=['tt', 'ctw', 'msra', 'ic15'])
+    parser.add_argument('--show-gt', action="store_true")
+    # show the ground truths with predictions
     args = parser.parse_args()
-
+    
+    # thickness for different datasets
     thickness = {'msra': 12, 'ctw':4, 'tt':4, 'ic15': 4}
     
     if args.dataset == 'msra':
@@ -175,5 +178,6 @@ if __name__ == '__main__':
         test_data_dir = ic15_test_data_dir
         test_gt_dir = ic15_test_gt_dir
         pred_dir = ic15_pred_dir
+        
     print(test_data_dir)
     visual(get_ann, test_data_dir, test_gt_dir, pred_dir, args.dataset)

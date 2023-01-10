@@ -12,47 +12,12 @@ import logging
 
 from dataset import build_data_loader
 from models import build_model
-from utils import AverageMeter
-from utils import setup_logger
+from utils import AverageMeter, setup_logger, EMA
 from dataset.dataloader import DataLoaderX
 try:
     import apex
 except:
     pass
-
-
-class EMA():
-    def __init__(self, model, decay):
-        self.model = model
-        self.decay = decay
-        self.shadow = {}
-        self.backup = {}
-
-    def register(self):
-        for name, param in self.model.named_parameters():
-            if param.requires_grad:
-                self.shadow[name] = param.data.clone()
-
-    def update(self):
-        for name, param in self.model.named_parameters():
-            if param.requires_grad:
-                assert name in self.shadow
-                new_average = (1.0 - self.decay) * param.data + self.decay * self.shadow[name]
-                self.shadow[name] = new_average.clone()
-
-    def apply_shadow(self):
-        for name, param in self.model.named_parameters():
-            if param.requires_grad:
-                assert name in self.shadow
-                self.backup[name] = param.data
-                param.data = self.shadow[name]
-
-    def restore(self):
-        for name, param in self.model.named_parameters():
-            if param.requires_grad:
-                assert name in self.backup
-                param.data = self.backup[name]
-        self.backup = {}
 
 
 def train(train_loader, model, optimizer, ema, epoch, start_iter, cfg):
@@ -248,7 +213,6 @@ def main(args):
         checkpoint = torch.load(cfg.train_cfg.pretrain)
         try:
             logging.info("loading ema pretrained weights!")
-            # state_dict = checkpoint['state_dict']
             state_dict = checkpoint['ema']
         except:
             state_dict = checkpoint['model']

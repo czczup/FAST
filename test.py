@@ -157,7 +157,9 @@ def main(args):
     # fuse conv and bn
     model = fuse_module(model)
     
-    # model_structure(model)
+    if args.print_model:
+        model_structure(model)
+        
     # flops, params = get_model_complexity_info(model, (3, 1280, 864))
     # flops, params = get_model_complexity_info(model, (3, 1200, 800))
     # flops, params = get_model_complexity_info(model, (3, 1344, 896))
@@ -175,10 +177,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Hyperparams')
     parser.add_argument('config', help='config file path')
     parser.add_argument('checkpoint', nargs='?', type=str, default=None)
-    parser.add_argument('--report_speed', action='store_true')
-    parser.add_argument('--min_score', default=None, type=float)
-    parser.add_argument('--min_area', default=None, type=int)
-    parser.add_argument('--batch_size', default=1, type=int)
+    parser.add_argument('--report-speed', action='store_true')
+    parser.add_argument('--print-model', action='store_true')
+    parser.add_argument('--min-score', default=None, type=float)
+    parser.add_argument('--min-area', default=None, type=int)
+    parser.add_argument('--batch-size', default=1, type=int)
     parser.add_argument('--worker', default=4, type=int)
     parser.add_argument('--ema', action='store_true')
 

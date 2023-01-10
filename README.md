@@ -23,7 +23,7 @@ This repository is an official implementation of the [FAST: Faster Arbitrarily-S
 
 ## Abstract
 We propose an accurate and efficient scene text detection framework, termed FAST (i.e., **F**aster **A**rbitrarily-**S**haped **T**ext detector).
-Different from recent advanced text detectors that used complicated post-processing and hand-crafted network architectures, resulting in low inference speed, FAST has two new designs. **(1)** We design a minimalist kernel representation (only has 1-channel output) to model text with arbitrary shape, as well as a GPU-parallel post-processing to efficiently assemble text lines with a negligible time overhead. **(2)** We search the network architecture
+Different from recent advanced text detectors that used complicated post-processing and hand-crafted network architectures, resulting in low inference speed, FAST has two new designs. (1) We design a minimalist kernel representation (only has 1-channel output) to model text with arbitrary shape, as well as a GPU-parallel post-processing to efficiently assemble text lines with a negligible time overhead. (2) We search the network architecture
 tailored for text detection, leading to more powerful features than most networks that are searched for image classification. Benefiting from these two designs, FAST achieves an excellent trade-off between accuracy and efficiency on several challenging datasets, including Total Text, CTW1500, ICDAR 2015, and MSRA-TD500. For example, FAST-T yields 81.6\% F-measure at 152 FPS on Total-Text, outperforming the previous fastest method by 1.7 points and 70 FPS in terms of accuracy and speed. With TensorRT optimization, the inference speed can be further accelerated to over 600 FPS.
 
 ## Method
@@ -77,6 +77,7 @@ mkdir pretrained/
 wget https://github.com/czczup/FAST/releases/download/release/fast_tiny_ic17mlt_640.pth
 wget https://github.com/czczup/FAST/releases/download/release/fast_small_ic17mlt_640.pth
 wget https://github.com/czczup/FAST/releases/download/release/fast_base_ic17mlt_640.pth
+cd ../
 ```
 Then, run the following command for training:
 ```shell
@@ -103,16 +104,33 @@ cd eval
 sh eval_tt.sh
 ```
 
+
+#### Evaluate all checkpoints in one folder
+```shell
+python test_all.py <config> <checkpoint-dir> --dataset [{tt/ctw/ic15/msra}] --start-ep 1 --end-ep 60 --ema
+```
+
 #### Evaluate the speed
 
 ```shell
-python test.py ${CONFIG_FILE} --report-speed
+python test.py <config> --report-speed
 ```
 For example:
 ```shell
 python test.py config/fast/tt/fast_base_tt_512_finetune_ic17mlt.py --report-speed
 ```
 
+#### Visulization
+
+Run the following script to visulize the prediction results:
+```shell
+python visualize.py --dataset [{tt/ctw/ic15/msra}] --show-gt
+```
+This script will load the predictions in `outputs/` and plot them on images.
+
+The visulized results will be saved in `visual/`.
+
+Note that the `--dataset` option must be one of `tt`/`ctw`/`ic15`/`msra`.
 
 
 ## Model Zoo
