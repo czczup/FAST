@@ -49,7 +49,8 @@ def test(test_loader, model, cfg):
         print('Testing %d/%d\r' % (idx, len(test_loader)), flush=True, end='')
         logging.info('Testing %d/%d\r' % (idx, len(test_loader)))
         # prepare input
-        data['imgs'] = data['imgs'].cuda(non_blocking=True)
+        if not args.cpu:
+            data['imgs'] = data['imgs'].cuda(non_blocking=True)
         data.update(dict(cfg=cfg))
         # forward
         with torch.no_grad():
@@ -129,7 +130,8 @@ def main(args):
     # model
     model = build_model(cfg.model)
     
-    model = model.cuda()
+    if not args.cpu:
+        model = model.cuda()
     
     if args.checkpoint is not None:
         if os.path.isfile(args.checkpoint):
@@ -184,6 +186,7 @@ if __name__ == '__main__':
     parser.add_argument('--batch-size', default=1, type=int)
     parser.add_argument('--worker', default=4, type=int)
     parser.add_argument('--ema', action='store_true')
+    parser.add_argument('--cpu', action='store_true')
 
     args = parser.parse_args()
     mmcv.mkdir_or_exist("./speed_test")

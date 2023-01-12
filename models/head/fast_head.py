@@ -5,7 +5,9 @@ from models.loss import build_loss, ohem_batch, iou
 from models.utils.nas_utils import set_layer_from_config
 from models.utils import generate_bbox
 import torch.nn.functional as F
+import numpy as np
 import json
+import cv2
 try:
     from ..post_processing import ccl_cuda
 except:
@@ -76,9 +78,17 @@ class FASTHead(nn.Module):
         score_maps = torch.sigmoid_(texts)  # B*1*320*320
         score_maps = F.interpolate(score_maps, size=(img_size[0], img_size[1]), mode='nearest')  # B*1*640*640
         score_maps = score_maps.squeeze(1)  # B*640*640
-
+        
         kernels = (out[:, 0, :, :] > 0).to(torch.uint8)  # B*160*160
-        labels_ = ccl_cuda.ccl_batch(kernels)  # B*160*160
+        if kernels.is_cuda:
+            labels_ = ccl_cuda.ccl_batch(kernels)  # B*160*160
+        else:
+            labels_ = []
+            for kernel in kernels.numpy():
+                ret, label_ = cv2.connectedComponents(kernel)
+                labels_.append(label_)
+            labels_ = np.array(labels_)
+            labels_ = torch.from_numpy(labels_)
         labels = labels_.unsqueeze(1).to(torch.float32)  # B*1*160*160
         labels = F.interpolate(labels, size=(img_size[0] // scale, img_size[1] // scale), mode='nearest')  # B*1*320*320
         labels = self._max_pooling(labels, scale=scale)
