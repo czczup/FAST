@@ -1,6 +1,19 @@
 # FAST
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/fast-searching-for-a-faster-arbitrarily/scene-text-detection-on-total-text)](https://paperswithcode.com/sota/scene-text-detection-on-total-text?p=fast-searching-for-a-faster-arbitrarily)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/fast-searching-for-a-faster-arbitrarily/scene-text-detection-on-msra-td500)](https://paperswithcode.com/sota/scene-text-detection-on-msra-td500?p=fast-searching-for-a-faster-arbitrarily)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/fast-searching-for-a-faster-arbitrarily/scene-text-detection-on-scut-ctw1500)](https://paperswithcode.com/sota/scene-text-detection-on-scut-ctw1500?p=fast-searching-for-a-faster-arbitrarily)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/fast-searching-for-a-faster-arbitrarily/scene-text-detection-on-icdar-2015)](https://paperswithcode.com/sota/scene-text-detection-on-icdar-2015?p=fast-searching-for-a-faster-arbitrarily)
+
+
+
 
 This repository is an official implementation of the [FAST: Faster Arbitrarily-Shaped Text Detector with Minimalist Kernel Representation](https://arxiv.org/pdf/2111.02394).
+
+
+
+https://user-images.githubusercontent.com/23737120/212238686-64a68149-1c09-44cb-ba26-e1dfb609db9e.mp4
+
+
 
 <details open>
 <summary>Text Detection</summary>
@@ -17,7 +30,7 @@ This repository is an official implementation of the [FAST: Faster Arbitrarily-S
 
 ## Catalog
 
-- [ ] TensorRT implementation
+- [x] TensorRT implementation
 - [x] Code and models
 - [x] Initialization
 
@@ -135,18 +148,22 @@ This script will load the predictions in `outputs/` and plot them on images.
 
 The visulized results will be saved in `visual/`.
 
-Note that the `--dataset` option must be one of `tt`/`ctw`/`ic15`/`msra`.
+Left is the ground truth and right is the prediction.
+
+![visulization](https://user-images.githubusercontent.com/23737120/212108547-5d509a9f-75f9-46cd-b8f9-bf04be725520.png)
+
 
 
 ## Model Zoo
+
 
 **IC17-MLT Pretrained FAST Models**
 
 | Model | Backbone | Pretrain | Resolution | #Params | Config| Download |
 | :---: |  :---: | :---: | :---: | :---: |  :---: | :---: | 
-| FAST-T | TextNet-T | [ImageNet-1K](https://github.com/czczup/FAST/releases/download/release/fast_tiny_in1k_epoch_299.pth)  | 640x640 | 8.5M  | config | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_tiny_ic17mlt_640.pth) \| [log](logs/ic17mlt/fast_tiny_ic17mlt_640.txt)   |
-| FAST-S | TextNet-S | [ImageNet-1K](https://github.com/czczup/FAST/releases/download/release/fast_small_in1k_epoch_299.pth) | 640x640 | 9.7M  | config | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_small_ic17mlt_640.pth) \| [log](logs/ic17mlt/fast_small_ic17mlt_640.txt) |
-| FAST-B | TextNet-B | [ImageNet-1K](https://github.com/czczup/FAST/releases/download/release/fast_base_in1k_epoch_299.pth)  | 640x640 | 10.6M | config | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_base_ic17mlt_640.pth) \| [log](logs/ic17mlt/fast_base_ic17mlt_640.txt)   |
+| FAST-T | TextNet-T | [ImageNet-1K](https://github.com/czczup/FAST/releases/download/release/fast_tiny_in1k_epoch_299.pth)  | 640x640 | 8.5M  | [config](config/fast/ic17mlt/fast_tiny_ic17mlt_640.py) | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_tiny_ic17mlt_640.pth) \| [log](logs/ic17mlt/fast_tiny_ic17mlt_640.txt)   |
+| FAST-S | TextNet-S | [ImageNet-1K](https://github.com/czczup/FAST/releases/download/release/fast_small_in1k_epoch_299.pth) | 640x640 | 9.7M  | [config](config/fast/ic17mlt/fast_small_ic17mlt_640.py) | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_small_ic17mlt_640.pth) \| [log](logs/ic17mlt/fast_small_ic17mlt_640.txt) |
+| FAST-B | TextNet-B | [ImageNet-1K](https://github.com/czczup/FAST/releases/download/release/fast_base_in1k_epoch_299.pth)  | 640x640 | 10.6M | [config](config/fast/ic17mlt/fast_base_ic17mlt_640.py) | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_base_ic17mlt_640.pth) \| [log](logs/ic17mlt/fast_base_ic17mlt_640.txt)   |
 
 **Results on Total-Text**
 
@@ -198,8 +215,8 @@ If this work is helpful for your research, please consider citing the following 
 
 ```
 @misc{chen2021fast,
-  title={FAST: Searching for a Faster Arbitrarily-Shaped Text Detector with Minimalist Kernel Representation}, 
-  author={Zhe Chen and Wenhai Wang and Enze Xie and ZhiBo Yang and Tong Lu and Ping Luo},
+  title={FAST: Faster Arbitrarily-Shaped Text Detector with Minimalist Kernel Representation}, 
+  author={Zhe Chen and Jiahao Wang and Wenhai Wang and Guo Chen and Enze Xie and Ping Luo and Tong Lu},
   year={2021},
   eprint={2111.02394},
   archivePrefix={arXiv},

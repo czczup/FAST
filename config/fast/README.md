@@ -6,9 +6,9 @@
 
 | Model | Backbone | Pretrain | Resolution | #Params | Config| Download |
 | :---: |  :---: | :---: | :---: | :---: |  :---: | :---: |
-| FAST-T | TextNet-T | [ImageNet-1K](https://github.com/czczup/FAST/releases/download/release/fast_tiny_in1k_epoch_299.pth)  | 640x640 | 8.5M  | config | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_tiny_ic17mlt_640.pth) \| [log](../../logs/ic17mlt/fast_tiny_ic17mlt_640.txt)   |
-| FAST-S | TextNet-S | [ImageNet-1K](https://github.com/czczup/FAST/releases/download/release/fast_small_in1k_epoch_299.pth) | 640x640 | 9.7M  | config | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_small_ic17mlt_640.pth) \| [log](../../logs/ic17mlt/fast_small_ic17mlt_640.txt) |
-| FAST-B | TextNet-B | [ImageNet-1K](https://github.com/czczup/FAST/releases/download/release/fast_base_in1k_epoch_299.pth)  | 640x640 | 10.6M | config | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_base_ic17mlt_640.pth) \| [log](../../logs/ic17mlt/fast_base_ic17mlt_640.txt)   |
+| FAST-T | TextNet-T | [ImageNet-1K](https://github.com/czczup/FAST/releases/download/release/fast_tiny_in1k_epoch_299.pth)  | 640x640 | 8.5M  | [config](ic17mlt/fast_tiny_ic17mlt_640.py) | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_tiny_ic17mlt_640.pth) \| [log](../../logs/ic17mlt/fast_tiny_ic17mlt_640.txt)   |
+| FAST-S | TextNet-S | [ImageNet-1K](https://github.com/czczup/FAST/releases/download/release/fast_small_in1k_epoch_299.pth) | 640x640 | 9.7M  | [config](ic17mlt/fast_small_ic17mlt_640.py) | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_small_ic17mlt_640.pth) \| [log](../../logs/ic17mlt/fast_small_ic17mlt_640.txt) |
+| FAST-B | TextNet-B | [ImageNet-1K](https://github.com/czczup/FAST/releases/download/release/fast_base_in1k_epoch_299.pth)  | 640x640 | 10.6M | [config](ic17mlt/fast_base_ic17mlt_640.py) | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_base_ic17mlt_640.pth) \| [log](../../logs/ic17mlt/fast_base_ic17mlt_640.txt)   |
 
 **Results on Total-Text**
 
