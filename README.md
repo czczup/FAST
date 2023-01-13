@@ -68,6 +68,7 @@ pip install tqdm
 pip install opencv-python==4.6.0.66
 
 # for python2 (evaluation)
+# the evaluation code is from pan_pp.pytorch
 pip2 install numpy==1.10
 pip2 install scipy==1.2.2
 pip2 install polygon2
@@ -144,11 +145,11 @@ Run the following script to visulize the prediction results:
 ```shell
 python visualize.py --dataset [{tt/ctw/ic15/msra}] --show-gt
 ```
-This script will load the predictions in `outputs/` and plot them on images.
+- This script will load the predictions in `outputs/` and plot them on images.
 
-The visulized results will be saved in `visual/`.
+- The visulized results will be saved in `visual/`.
 
-Left is the ground truth and right is the prediction.
+- Left is the ground truth and right is the prediction.
 
 ![visulization](https://user-images.githubusercontent.com/23737120/212108547-5d509a9f-75f9-46cd-b8f9-bf04be725520.png)
 
@@ -164,6 +165,11 @@ Left is the ground truth and right is the prediction.
 | FAST-T | TextNet-T | [ImageNet-1K](https://github.com/czczup/FAST/releases/download/release/fast_tiny_in1k_epoch_299.pth)  | 640x640 | 8.5M  | [config](config/fast/ic17mlt/fast_tiny_ic17mlt_640.py) | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_tiny_ic17mlt_640.pth) \| [log](logs/ic17mlt/fast_tiny_ic17mlt_640.txt)   |
 | FAST-S | TextNet-S | [ImageNet-1K](https://github.com/czczup/FAST/releases/download/release/fast_small_in1k_epoch_299.pth) | 640x640 | 9.7M  | [config](config/fast/ic17mlt/fast_small_ic17mlt_640.py) | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_small_ic17mlt_640.pth) \| [log](logs/ic17mlt/fast_small_ic17mlt_640.txt) |
 | FAST-B | TextNet-B | [ImageNet-1K](https://github.com/czczup/FAST/releases/download/release/fast_base_in1k_epoch_299.pth)  | 640x640 | 10.6M | [config](config/fast/ic17mlt/fast_base_ic17mlt_640.py) | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_base_ic17mlt_640.pth) \| [log](logs/ic17mlt/fast_base_ic17mlt_640.txt)   |
+| FAST-T | TextNet-T | -  | 640x640 | 8.5M  | - | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_tiny_ic17mlt_640_wo_imagenet.pth)   |
+| FAST-S | TextNet-S | -  | 640x640 | 9.7M  | - | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_small_ic17mlt_640_wo_imagenet.pth)  |
+| FAST-B | TextNet-B | -  | 640x640 | 10.6M | - | [ckpt](https://github.com/czczup/FAST/releases/download/release/fast_base_ic17mlt_640_wo_imagenet.pth)   |
+
+- We provide the IC17-MLT pretrained weights with and without ImageNet pretraining.
 
 **Results on Total-Text**
 
