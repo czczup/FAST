@@ -5,14 +5,7 @@
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/fast-searching-for-a-faster-arbitrarily/scene-text-detection-on-icdar-2015)](https://paperswithcode.com/sota/scene-text-detection-on-icdar-2015?p=fast-searching-for-a-faster-arbitrarily)
 
 
-
-
 This repository is an official implementation of the [FAST: Faster Arbitrarily-Shaped Text Detector with Minimalist Kernel Representation](https://arxiv.org/pdf/2111.02394).
-
-
-
-https://user-images.githubusercontent.com/23737120/212238686-64a68149-1c09-44cb-ba26-e1dfb609db9e.mp4
-
 
 
 <details open>
@@ -23,6 +16,14 @@ https://user-images.githubusercontent.com/23737120/212238686-64a68149-1c09-44cb-
 - [x] [FAST (Arxiv'2021)](config/fast/)
 
 </details>
+
+
+## Zero-shot Video Text Detection Demo
+
+https://user-images.githubusercontent.com/23737120/212238686-64a68149-1c09-44cb-ba26-e1dfb609db9e.mp4
+
+
+
 
 ## News
 - `Jan 10, 2023:`🚀🚀 Code and models are released.
