@@ -8,6 +8,8 @@
 This repository is an official implementation of the [FAST: Faster Arbitrarily-Shaped Text Detector with Minimalist Kernel Representation](https://arxiv.org/pdf/2111.02394).
 
 
+
+
 <details open>
 <summary>Text Detection</summary>
 
@@ -18,6 +20,12 @@ This repository is an official implementation of the [FAST: Faster Arbitrarily-S
 </details>
 
 
+## News
+- `Mar 11, 2024:`🚀🚀 FAST has been integrated into the [docTR](https://github.com/mindee/doctr), a seamless, high-performing & accessible library for OCR-related tasks.
+- `Jan 10, 2023:`🚀 Code and models are released.
+- `Dec 06, 2022:` Code and models of FAST will be released in this repository.
+
+
 ## Zero-shot Video Text Detection Demo
 
 https://user-images.githubusercontent.com/23737120/212238686-64a68149-1c09-44cb-ba26-e1dfb609db9e.mp4
@@ -25,9 +33,6 @@ https://user-images.githubusercontent.com/23737120/212238686-64a68149-1c09-44cb-
 
 
 
-## News
-- `Jan 10, 2023:`🚀🚀 Code and models are released.
-- `Dec 06, 2022:`🚀 Code and models of FAST will be released in this repository.
 
 ## Catalog
 
