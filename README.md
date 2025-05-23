@@ -18,9 +18,9 @@ This repository is an official implementation of the [FAST: Faster Arbitrarily-S
 
 
 ## News
-- `Nov 28, 2024:` TextNet and FAST have been officially integrated into [transformers](https://github.com/huggingface/transformers).
-- `Mar 11, 2024:` 🚀🚀 FAST has been integrated into the [docTR](https://github.com/mindee/doctr), a seamless, high-performing & accessible library for OCR-related tasks.
-- `Jan 10, 2023:` 🚀 Code and models are released.
+- `Nov 28, 2024:` 🚀🚀 TextNet and FAST have been officially integrated into [transformers](https://github.com/huggingface/transformers).
+- `Mar 11, 2024:` 🚀 FAST has been integrated into the [docTR](https://github.com/mindee/doctr), a seamless, high-performing & accessible library for OCR-related tasks.
+- `Jan 10, 2023:` Code and models are released.
 - `Dec 06, 2022:` Code and models of FAST will be released in this repository.
 
 
